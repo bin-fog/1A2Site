@@ -39,7 +39,7 @@ class Event(db.Model, Base):
     image_url = Column(String)
     is_archived = Column(Boolean, default=0)
 
-    def __init__(self, name: str, description: str, tags: int, date: datetime):
+    def __init__(self, name: str, description: str, tags: str, date: datetime):
         self.name = name
         self.description = description
         self.tags = tags

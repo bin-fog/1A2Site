@@ -1,11 +1,16 @@
 from . import db, app
 from json import dumps
 from sqlalchemy import select
-from models import User, Event, Recommendation
+from app.models import User, Event, Recommendation
 from flask import request
+from datetime import datetime
 
 
-"""
+@app.route('/')
+def index():
+    return b"This is API", 418
+
+
 @app.route('/add_user')
 def add_user():
     if request.json.name is not None and request.json.surname is not None and request.json.phone is not None and request.json.pass_hash is not None:
@@ -17,10 +22,21 @@ def add_user():
 
 @app.route('/get_events')
 def get_events():
-    db.session.get(E)
-    return dumps(data)
+    data = db.session.get(Event)
+    return f"{data}"
 
 
+@app.route('/add_events')
+def add_events():
+    if request.json.name is not None and request.json.description is not None and request.json.tags is not None and request.json.date is not None:
+        db.session.add(Event(request.json.name, request.json.description,
+                             request.json.tags, datetime.fromisoformat(request.json.date)))
+        return 201
+    else:
+        return 400
+
+
+"""
 @app.route('/get_recomendations')
 def get_recomendations():
     id = request.form["user_id"]
