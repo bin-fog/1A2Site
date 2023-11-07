@@ -1,5 +1,5 @@
 from . import db, app
-from json import dumps
+from json import dumps, loads
 from sqlalchemy import select
 from app.models import User, Event, Recommendation
 from flask import request
@@ -22,18 +22,20 @@ def add_user():
 
 @app.route('/get_events')
 def get_events():
-    data = db.session.get(Event)
+    data = db.session.get(Event, 5)
     return f"{data}"
 
 
 @app.route('/add_events')
 def add_events():
-    if request.json.name is not None and request.json.description is not None and request.json.tags is not None and request.json.date is not None:
-        db.session.add(Event(request.json.name, request.json.description,
-                             request.json.tags, datetime.fromisoformat(request.json.date)))
-        return 201
+    data = loads(request.get_data(as_text=True, parse_form_data=True))
+    print(data)
+    if "name" in data and "description" in data and "tags" in data and "datetime" in data:
+        db.session.add(Event(data["name"], data["description"],
+                             data["tags"], datetime.fromisoformat(data["datetime"])))
+        return "Ok", 201
     else:
-        return 400
+        return "Failed", 400
 
 
 """
