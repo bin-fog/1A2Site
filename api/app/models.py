@@ -45,6 +45,9 @@ class Event(db.Model, Base):
         self.tags = tags
         self.date = date
 
+    def print(self) -> (str, str, str, datetime, str):
+        return self.name, self.description, self.tags, self.date, self.image_url
+
 
 class Recommendation(db.Model, Base):
     __tablename__ = 'recommendations'

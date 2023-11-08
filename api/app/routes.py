@@ -22,8 +22,14 @@ def add_user():
 
 @app.route('/get_events')
 def get_events():
-    data = db.session.get(Event, 5)
-    return f"{data}"
+    data = db.session.execute(select(Event))
+    dt = []
+    for i in list(data):
+        tmp = list(i[0].print())
+        if tmp[3] is not None:
+            tmp[3] = " ".join(":".join(tmp[3].isoformat().split(":")[:-1]).split("T"))
+        dt.append(tmp)
+    return dumps(dt)
 
 
 @app.route('/add_events')
@@ -33,6 +39,7 @@ def add_events():
     if "name" in data and "description" in data and "tags" in data and "datetime" in data:
         db.session.add(Event(data["name"], data["description"],
                              data["tags"], datetime.fromisoformat(data["datetime"])))
+        db.session.commit()
         return "Ok", 201
     else:
         return "Failed", 400
