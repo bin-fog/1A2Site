@@ -8,7 +8,7 @@ export default function Question (props) {
     });
     return (
         <>
-        <h1 class="mb-5 mt-9 text-2xl font-semibold text-gray-200">
+        <h1 className="mb-5 mt-9 text-2xl font-semibold text-gray-200">
               {props.question}
         </h1>
         <div className="ml-20 pl-20">

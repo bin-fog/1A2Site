@@ -2,20 +2,20 @@ import Question from "./Question";
 
 export default function Anket() {
   return (
-    <section class="text-gray-600 body-font">
-      <div class="max-w-5xl pt-52 pb-24 mx-auto">
-        <h1 class="mazzardH text-80 text-center font-4 lh-6 ld-04 font-bold text-white mb-6">
-          НЕЙМАРК.Абитур
+    <section className="text-gray-600 body-font">
+      <div className="max-w-5xl pt-52 pb-24 mx-auto">
+        <h1 className="mazzardH text-80 text-center font-4 lh-6 ld-04 font-bold text-white mb-6">
+          НЕЙМАРК.Абитуриенты
         </h1>
-        <h2 class="text-2xl font-4 font-semibold lh-6 ld-04 text-gray-700 text-center">
+        <h2 className="text-2xl font-4 font-semibold lh-6 ld-04 text-gray-700 text-center">
           Портал для абитуриентов и студентов,
           <br/>
           заинтересованных экосистемой НЕЙМАРК
         </h2>
-        <section class="relative pb-20">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 text-center">
-          <div class="py-24 md:py-36">
-            <h1 class="mb-5 text-6xl font-bold text-white">
+        <section className="relative pb-20">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 text-center">
+          <div className="py-24 md:py-36">
+            <h1 className="mb-5 text-6xl font-bold text-white">
               Пройдите анкетирование:
             </h1>
             <Question 
@@ -93,47 +93,47 @@ export default function Anket() {
               ]}
               id="q7"
             />
-            <h1 class="mb-9 mt-9 text-2xl font-semibold text-gray-200">
+            <h1 className="mb-9 mt-9 text-2xl font-semibold text-gray-200">
               Какие занятия на работе тебя больше всего привлекли?
             </h1>
             <textarea
               type="text"
-              class="border border-gray-600 w-10/12 rounded-md text-gray-800 font-semibold hover:border-gray-700 bg-black"
+              className="border border-gray-600 w-10/12 rounded-md text-white font-semibold hover:border-gray-700 bg-black"
             />
-            <h1 class="mb-9 mt-9 text-2xl font-semibold text-gray-200">
+            <h1 className="mb-9 mt-9 text-2xl font-semibold text-gray-200">
               Перед тобой оказался телефон. Что ты в первую очередь сделаешь?
             </h1>
             <textarea
               type="text"
-              class="border border-gray-600 w-10/12 rounded-md text-gray-800 font-semibold hover:border-gray-700 bg-black"
+              className="border border-gray-600 w-10/12 rounded-md text-white font-semibold hover:border-gray-700 bg-black"
             />
-            <h1 class="mb-9 mt-9 text-2xl font-semibold text-gray-200">
+            <h1 className="mb-9 mt-9 text-2xl font-semibold text-gray-200">
               Какие свои качества считаешь мощными?
             </h1>
             <textarea
               type="text"
-              class="border border-gray-600  w-10/12 rounded-md text-gray-800 font-semibold hover:border-gray-700 bg-black"
+              className="border border-gray-600  w-10/12 rounded-md text-white font-semibold hover:border-gray-700 bg-black"
             />
-            <h1 class="mb-9 mt-9 text-2xl font-semibold text-gray-200">
+            <h1 className="mb-9 mt-9 text-2xl font-semibold text-gray-200">
             Какие свои качества считаешь непостижимыми?
             </h1>
             <textarea
               type="text"
-              class="border border-gray-600  w-10/12 rounded-md text-gray-800 font-semibold hover:border-gray-700 bg-black"
+              className="border border-gray-600  w-10/12 rounded-md text-white font-semibold hover:border-gray-700 bg-black"
             />
-            <h1 class="mb-9 mt-9 text-2xl font-semibold text-gray-200">
+            <h1 className="mb-9 mt-9 text-2xl font-semibold text-gray-200">
             Какие качества ты сможешь приобрести за разумное время?
             </h1>
             <textarea
               type="text"
-              class="border border-gray-600  w-10/12 rounded-md text-gray-800 font-semibold hover:border-gray-700 bg-black"
+              className="border border-gray-600 w-10/12 rounded-md text-white font-semibold hover:border-gray-700 bg-black"
             />
           </div>
           <a
-              class="inline-flex items-center px-14 py-3 mt-2 ml-2 font-medium text-black transition duration-500 ease-in-out transform bg-transparent border rounded-lg bg-white"
-              href="/"
+              className="inline-flex items-center px-14 py-3 mt-2 ml-2 hover:bg-neyred-100 font-medium text-black transition duration-500 ease-in-out transform bg-transparent border rounded-lg bg-white"
+              href="/completed"
             >
-              <span class="justify-center">Отправить</span>
+              <span className="justify-center">Отправить</span>
             </a>
         </div>
       </section>
