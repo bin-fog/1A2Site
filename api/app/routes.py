@@ -45,6 +45,44 @@ def add_events():
         return "Failed", 400
 
 
+@app.route('/get_recommendations')
+def get_recommendations():
+    data = loads(request.get_data(as_text=True, parse_form_data=True))
+    if "user_id" in data is None:
+        return "Failed", 400
+    tags = db.session.get(User, {"id": data["user_id"]}).tags
+    tags = tags.split()
+    fin = []
+    for i in loads(get_events()):
+        etags = i[2].split()
+        rate = 0
+        for j in tags:
+            if j[1:] in etags:
+                if j[0] == "-":
+                    rate -= 2
+                else:
+                    rate += 1
+        if rate > 0:
+           fin.append([i[1], i[3], i[4], etags])
+    fin.sort(key=lambda x: x[3])
+    print(fin)
+    return dumps(fin), 200
+
+
+@app.route('/auth_user')
+def auth_user():
+    phone = request.form["phone"]
+    password = request.form["password"]
+    hash = db.session.get(User, {"phone": phone}).password_hash
+    """
+    cursor.execute(f"SELECT password_hash from users WHERE phone={phone}")
+    data = cursor.fetchone()
+    if data == password_hash:
+        cursor.execute(f"SELECT auth_key from users WHERE phone={phone}")
+        data = cursor.fetchone()
+    """
+
+
 """
 @app.route('/get_recomendations')
 def get_recomendations():
@@ -87,15 +125,7 @@ def regenerate_user_token():
     pass
 
 
-@app.route('/auth_user')
-def auth_user():
-    phone = request.form["phone"]
-    password_hash = request.form["password_hash"]
-    cursor.execute(f"SELECT password_hash from users WHERE phone={phone}")
-    data = cursor.fetchone()
-    if data == password_hash:
-        cursor.execute(f"SELECT auth_key from users WHERE phone={phone}")
-        data = cursor.fetchone()
+
 
 
 @app.route('/validate_user')

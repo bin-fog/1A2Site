@@ -17,6 +17,7 @@ class User(db.Model, Base):
     course = Column(String)
     avatar_url = Column(String)
     phone = Column(Integer)
+    tags = Column(String)
 
     is_admin = Column(Boolean)
     auth_token = Column(String)
