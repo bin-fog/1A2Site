@@ -10,4 +10,4 @@ db = SQLAlchemy(app)
 
 from . import routes, models
 
-app.run()
+app.run(host="0.0.0.0")

@@ -4,6 +4,7 @@ from sqlalchemy import select
 from app.models import User, Event, Recommendation
 from flask import request
 from datetime import datetime
+from _md5 import md5
 
 
 @app.route('/')
@@ -45,7 +46,7 @@ def add_events():
         return "Failed", 400
 
 
-@app.route('/get_recommendations')
+@app.route('/get-recommendations')
 def get_recommendations():
     data = loads(request.get_data(as_text=True, parse_form_data=True))
     if "user_id" in data is None:
@@ -63,25 +64,23 @@ def get_recommendations():
                 else:
                     rate += 1
         if rate > 0:
-           fin.append([i[1], i[3], i[4], etags])
+           fin.append([i[0], i[1], i[3], etags])
     fin.sort(key=lambda x: x[3])
-    print(fin)
     return dumps(fin), 200
 
 
 @app.route('/auth_user')
 def auth_user():
-    phone = request.form["phone"]
-    password = request.form["password"]
+    data = loads(request.get_data(as_text=True, parse_form_data=True))
+    phone = data["phone"]
+    password = data["password"]
+    if phone is None or password is None:
+        return "Invalid Arguments", 400
     hash = db.session.get(User, {"phone": phone}).password_hash
-    """
-    cursor.execute(f"SELECT password_hash from users WHERE phone={phone}")
-    data = cursor.fetchone()
-    if data == password_hash:
-        cursor.execute(f"SELECT auth_key from users WHERE phone={phone}")
-        data = cursor.fetchone()
-    """
-
+    if hash == md5(password):
+        return db.session.get(User, {"phone": phone}).auth_key, 200
+    else:
+        return "Invalid", 400
 
 """
 @app.route('/get_recomendations')
