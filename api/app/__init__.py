@@ -9,3 +9,5 @@ app.config.from_object(Config)
 db = SQLAlchemy(app)
 
 from . import routes, models
+
+app.run(host="0.0.0.0")

@@ -1,11 +1,17 @@
 from . import db, app
-from json import dumps
+from json import dumps, loads
 from sqlalchemy import select
-from models import User, Event, Recommendation
+from app.models import User, Event, Recommendation
 from flask import request
+from datetime import datetime
+from _md5 import md5
 
 
-"""
+@app.route('/')
+def index():
+    return b"This is API", 418
+
+
 @app.route('/add_user')
 def add_user():
     if request.json.name is not None and request.json.surname is not None and request.json.phone is not None and request.json.pass_hash is not None:
@@ -17,10 +23,66 @@ def add_user():
 
 @app.route('/get_events')
 def get_events():
-    db.session.get(E)
-    return dumps(data)
+    data = db.session.execute(select(Event))
+    dt = []
+    for i in list(data):
+        tmp = list(i[0].print())
+        if tmp[3] is not None:
+            tmp[3] = " ".join(":".join(tmp[3].isoformat().split(":")[:-1]).split("T"))
+        dt.append(tmp)
+    return dumps(dt)
 
 
+@app.route('/add_events')
+def add_events():
+    data = loads(request.get_data(as_text=True, parse_form_data=True))
+    print(data)
+    if "name" in data and "description" in data and "tags" in data and "datetime" in data:
+        db.session.add(Event(data["name"], data["description"],
+                             data["tags"], datetime.fromisoformat(data["datetime"])))
+        db.session.commit()
+        return "Ok", 201
+    else:
+        return "Failed", 400
+
+
+@app.route('/get-recommendations')
+def get_recommendations():
+    data = loads(request.get_data(as_text=True, parse_form_data=True))
+    if "user_id" in data is None:
+        return "Failed", 400
+    tags = db.session.get(User, {"id": data["user_id"]}).tags
+    tags = tags.split()
+    fin = []
+    for i in loads(get_events()):
+        etags = i[2].split()
+        rate = 0
+        for j in tags:
+            if j[1:] in etags:
+                if j[0] == "-":
+                    rate -= 2
+                else:
+                    rate += 1
+        if rate > 0:
+           fin.append([i[0], i[1], i[3], etags])
+    fin.sort(key=lambda x: x[3])
+    return dumps(fin), 200
+
+
+@app.route('/auth_user')
+def auth_user():
+    data = loads(request.get_data(as_text=True, parse_form_data=True))
+    phone = data["phone"]
+    password = data["password"]
+    if phone is None or password is None:
+        return "Invalid Arguments", 400
+    hash = db.session.get(User, {"phone": phone}).password_hash
+    if hash == md5(password):
+        return db.session.get(User, {"phone": phone}).auth_key, 200
+    else:
+        return "Invalid", 400
+
+"""
 @app.route('/get_recomendations')
 def get_recomendations():
     id = request.form["user_id"]
@@ -62,15 +124,7 @@ def regenerate_user_token():
     pass
 
 
-@app.route('/auth_user')
-def auth_user():
-    phone = request.form["phone"]
-    password_hash = request.form["password_hash"]
-    cursor.execute(f"SELECT password_hash from users WHERE phone={phone}")
-    data = cursor.fetchone()
-    if data == password_hash:
-        cursor.execute(f"SELECT auth_key from users WHERE phone={phone}")
-        data = cursor.fetchone()
+
 
 
 @app.route('/validate_user')

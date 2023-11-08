@@ -17,6 +17,7 @@ class User(db.Model, Base):
     course = Column(String)
     avatar_url = Column(String)
     phone = Column(Integer)
+    tags = Column(String)
 
     is_admin = Column(Boolean)
     auth_token = Column(String)
@@ -39,11 +40,14 @@ class Event(db.Model, Base):
     image_url = Column(String)
     is_archived = Column(Boolean, default=0)
 
-    def __init__(self, name: str, description: str, tags: int, date: datetime):
+    def __init__(self, name: str, description: str, tags: str, date: datetime):
         self.name = name
         self.description = description
         self.tags = tags
         self.date = date
+
+    def print(self) -> (str, str, str, datetime, str):
+        return self.name, self.description, self.tags, self.date, self.image_url
 
 
 class Recommendation(db.Model, Base):
